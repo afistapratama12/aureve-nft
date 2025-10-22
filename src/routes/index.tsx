@@ -113,7 +113,7 @@ function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090b] relative overflow-hidden">
+    <div className="bg-[#09090b] relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         {/* Dot Grid Pattern */}

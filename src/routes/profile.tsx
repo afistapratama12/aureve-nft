@@ -39,7 +39,7 @@ function ProfilePage() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-[#09090b] flex items-center justify-center">
+      <div className="min-h-screen bg-[#09090b] flex items-center justify-center py-10">
         <div className="absolute inset-0 -z-10">
           <div
             className="absolute inset-0 opacity-20"
@@ -97,7 +97,7 @@ function ProfilePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#09090b]">
+    <div className="bg-[#09090b]">
       <div className="absolute inset-0 -z-10">
         <div
           className="absolute inset-0 opacity-20"
@@ -151,9 +151,9 @@ function ProfilePage() {
                     <Button
                       onClick={() => disconnect()}
                       variant="outline"
-                      className="h-9 px-4 text-sm border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/30 transition-all"
+                      className="h-8 px-4 text-sm border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/30 transition-all"
                     >
-                      <LogOut className="w-4 h-4 mr-2" />
+                      <LogOut className="w-4 h-4" />
                       Disconnect
                     </Button>
                   </div>

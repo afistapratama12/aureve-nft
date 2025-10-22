@@ -14,8 +14,8 @@ export interface PinataMetadata {
   keyvalues?: Record<string, string>;
 }
 
-const PINATA_API_KEY = import.meta.env.PINATA_API_KEY;
-const PINATA_GATEWAY = import.meta.env.PINATA_GATEWAY_DOMAIN;
+const PINATA_API_KEY = import.meta.env.VITE_PINATA_API_KEY;
+const PINATA_GATEWAY = import.meta.env.VITE_PINATA_GATEWAY_DOMAIN;
 
 /**
  * Upload file to IPFS via Pinata (client-side)
@@ -25,9 +25,17 @@ export async function uploadToPinata(
   metadata?: PinataMetadata
 ): Promise<string> {
   if (!PINATA_API_KEY) {
-    throw new Error("Pinata API key not configured");
+    console.error("Pinata API key is missing. Please set VITE_PINATA_API_KEY in your .env file");
+    throw new Error("Pinata API key not configured. Please check your .env file.");
   }
+  
   try {
+    console.log("Uploading to Pinata...", { 
+      fileName: file instanceof File ? file.name : 'blob',
+      fileSize: file.size,
+      fileType: file.type 
+    });
+    
     const formData = new FormData();
     formData.append("file", file);
   
@@ -44,14 +52,20 @@ export async function uploadToPinata(
     });
   
     if (!response.ok) {
-      throw new Error("Failed to upload to Pinata");
+      const errorText = await response.text();
+      console.error("Pinata API error:", { status: response.status, error: errorText });
+      throw new Error(`Pinata upload failed: ${response.status} - ${errorText}`);
     }
   
     const data = await response.json();
+    console.log("Upload successful:", data.IpfsHash);
     return data.IpfsHash;
   } catch (error) {
     console.error("Error uploading to Pinata:", error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to upload to IPFS");
   }
 }
 
@@ -63,10 +77,13 @@ export async function uploadJSONToPinata(
   filename: string
 ): Promise<string> {
   if (!PINATA_API_KEY) {
-    throw new Error("Pinata API key not configured");
+    console.error("Pinata API key is missing. Please set VITE_PINATA_API_KEY in your .env file");
+    throw new Error("Pinata API key not configured. Please check your .env file.");
   }
 
   try {
+    console.log("Uploading JSON to Pinata...", { filename });
+    
     const response = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
       method: "POST",
       headers: {
@@ -83,14 +100,19 @@ export async function uploadJSONToPinata(
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Pinata JSON upload failed: ${errorText}`);
+      console.error("Pinata JSON upload error:", { status: response.status, error: errorText });
+      throw new Error(`Pinata JSON upload failed: ${response.status} - ${errorText}`);
     }
 
     const data: PinataUploadResponse = await response.json();
+    console.log("JSON upload successful:", data.IpfsHash);
     return data.IpfsHash;
   } catch (error) {
     console.error("Error uploading JSON to Pinata:", error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to upload metadata to IPFS");
   }
 }
 

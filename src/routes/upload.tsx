@@ -45,7 +45,7 @@ function UploadPage() {
   // Check if wallet is connected
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-[#09090b] flex items-center justify-center">
+      <div className="bg-[#09090b] flex items-center justify-center py-20">
         <div className="absolute inset-0 -z-10">
           <div
             className="absolute inset-0 opacity-20"
@@ -178,7 +178,7 @@ function UploadPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] py-12">
+    <div className="bg-[#09090b] py-12">
       <div className="absolute inset-0 -z-10">
         <div
           className="absolute inset-0 opacity-20"
