@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetAssets } from "@/hooks/useAssets";
+import { useMarketplaceNFTs } from "@/hooks/useAureveNFTs";
 import { useMarketplaceStore } from "@/stores";
 import { NFTCard } from "@/components/ui/nft-card";
 import { Search, Filter, Grid3x3, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { ethers } from "ethers";
+import { useState, useMemo } from "react";
 
 /**
  * Marketplace page - Browse and search for NFTs
@@ -19,10 +18,29 @@ function MarketplacePage() {
     useMarketplaceStore();
   const [viewMode, setViewMode] = useState<'grid' | 'large'>('grid');
 
-  const { data: assets, isLoading } = useGetAssets({
-    assetType: assetTypeFilter,
-    search: searchQuery,
-  });
+  const { data: allNFTs = [], isLoading } = useMarketplaceNFTs();
+
+  // Filter NFTs based on search and asset type
+  const assets = useMemo(() => {
+    let filtered = allNFTs;
+
+    // Filter by asset type
+    if (assetTypeFilter && assetTypeFilter !== 'all') {
+      filtered = filtered.filter((nft) => nft.assetType === assetTypeFilter);
+    }
+
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (nft) =>
+          nft.title.toLowerCase().includes(query) ||
+          nft.description.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  }, [allNFTs, assetTypeFilter, searchQuery]);
 
   return (
     <div className="min-h-screen bg-[#09090b]">
@@ -123,10 +141,10 @@ function MarketplacePage() {
                 id={asset.id}
                 title={asset.title || 'Untitled'}
                 description={asset.description}
-                price={`${ethers.formatEther(asset.price || '0')} ETH`}
-                image={`https://ipfs.io/ipfs/${asset.preview_cid}`}
-                creator={asset.creator_wallet?.slice(0, 6) + '...' + asset.creator_wallet?.slice(-4)}
-                editions={asset.token_id}
+                price={`${asset.price} ETH`}
+                image={asset.imageUrl || ''}
+                creator={asset.creatorAddress.slice(0, 6) + '...' + asset.creatorAddress.slice(-4)}
+                editions={asset.tokenId}
                 onPurchase={() => {
                   // TODO: Navigate to asset detail page
                   console.log('Purchase', asset.id);

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useWallet } from '@/hooks/useWallet'
 import { useExternalNFTs } from '@/hooks/useExternalNFTs'
+import { useAureveNFTs } from '@/hooks/useAureveNFTs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { NFTCard } from '@/components/ui/nft-card'
@@ -15,9 +16,7 @@ export const Route = createFileRoute('/profile')({
 function ProfilePage() {
   const { address, isConnected, balance, chainName, openModal, disconnect } = useWallet()
   const { data: externalNFTs, isLoading: isLoadingExternal } = useExternalNFTs()
-
-  // TODO: Fetch Aureve NFTs dari contract
-  const aureveNFTs: any[] = []
+  const { data: aureveNFTs = [], isLoading: isLoadingAureve } = useAureveNFTs()
 
   const copyAddress = () => {
     if (address) {
@@ -217,17 +216,24 @@ function ProfilePage() {
             </Link>
           </div>
 
-          {aureveNFTs.length === 0 ? (
+          {isLoadingAureve ? (
+            <Card className="bg-white/[0.03] border-white/[0.08]">
+              <CardContent className="py-12 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-500 border-t-transparent mx-auto mb-4" />
+                <p className="text-gray-400">Loading your Aureve NFTs...</p>
+              </CardContent>
+            </Card>
+          ) : aureveNFTs.length === 0 ? (
             <Card className="bg-white/[0.03] border-white/[0.08]">
               <CardContent className="py-12 text-center">
                 <Image className="w-16 h-16 mx-auto mb-4 text-gray-600" />
                 <h3 className="text-xl font-semibold text-white mb-2">No Aureve NFTs Yet</h3>
                 <p className="text-gray-300 mb-6">
-                  Start building your collection by purchasing NFTs from the marketplace
+                  Start creating your NFTs on the Aureve platform
                 </p>
-                <Link to="/marketplace">
+                <Link to="/upload">
                   <Button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/25">
-                    Explore Marketplace
+                    Create Your First NFT
                   </Button>
                 </Link>
               </CardContent>
@@ -245,9 +251,9 @@ function ProfilePage() {
                     id={nft.id}
                     title={nft.title}
                     description={nft.description}
-                    image={nft.imageUrl}
+                    image={nft.imageUrl || ''}
                     price={nft.price}
-                    creator={shortenAddress(nft.creator)}
+                    creator={shortenAddress(nft.creatorAddress)}
                     onPurchase={() => {
                       // Navigate to asset detail page
                       window.location.href = `/assets/${nft.id}`

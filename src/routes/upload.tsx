@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { motion } from "framer-motion";
 import { useWallet } from "@/hooks/useWallet";
 import { cn } from "@/lib/utils";
+import { createNFT, type MintFormData } from "@/services/nft/mintService";
 
 export const Route = createFileRoute("/upload")({
   component: UploadPage,
@@ -27,7 +28,7 @@ interface UploadFormData {
 
 function UploadPage() {
   const navigate = useNavigate();
-  const { isConnected, openModal } = useWallet();
+  const { isConnected, openModal, address, chainId } = useWallet();
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
@@ -123,25 +124,39 @@ function UploadPage() {
       return;
     }
 
+    if (!address || !chainId) {
+      alert("Wallet not properly connected");
+      return;
+    }
+
     setIsUploading(true);
     
     try {
-      // TODO: Implement actual upload logic
+      // Create NFT with full implementation
       // 1. Upload to IPFS via Pinata
       // 2. Create lazy mint voucher
       // 3. Save to Supabase
       
-      console.log("Uploading:", formData);
+      const mintData: MintFormData = {
+        file: formData.file,
+        title: formData.title,
+        description: formData.description,
+        price: formData.price,
+        royalty: formData.royalty,
+        assetType: formData.assetType!,
+      };
+
+      console.log("Creating NFT...");
+      const result = await createNFT(mintData, address, chainId);
       
-      // Simulate upload
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log("NFT created successfully:", result);
+      alert(`Asset uploaded successfully! Token ID: ${result.tokenId}`);
       
       // Navigate to marketplace
-      alert("Asset uploaded successfully!");
       navigate({ to: "/marketplace" });
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Upload failed. Please try again.");
+      alert(error instanceof Error ? error.message : "Upload failed. Please try again.");
     } finally {
       setIsUploading(false);
     }
