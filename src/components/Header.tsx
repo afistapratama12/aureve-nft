@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X, Wallet, Plus, Store, Home } from "lucide-react";
+import { Menu, X, Wallet, Plus, Store, Home, ArrowLeftRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useWallet } from "@/hooks/useWallet";
@@ -29,6 +29,7 @@ export default function Header() {
   const navLinks = [
     { to: "/", label: "Home", icon: Home },
     { to: "/marketplace", label: "Marketplace", icon: Store },
+    { to: "/swap", label: "Swap", icon: ArrowLeftRight },
     { to: "/upload", label: "Create", icon: Plus },
   ];
 

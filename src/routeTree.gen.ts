@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UploadRouteImport } from './routes/upload'
+import { Route as SwapRouteImport } from './routes/swap'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as IndexRouteImport } from './routes/index'
@@ -18,6 +19,11 @@ import { Route as AssetsAssetIdRouteImport } from './routes/assets.$assetId'
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
   path: '/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SwapRoute = SwapRouteImport.update({
+  id: '/swap',
+  path: '/swap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/marketplace': typeof MarketplaceRoute
   '/profile': typeof ProfileRoute
+  '/swap': typeof SwapRoute
   '/upload': typeof UploadRoute
   '/assets/$assetId': typeof AssetsAssetIdRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/marketplace': typeof MarketplaceRoute
   '/profile': typeof ProfileRoute
+  '/swap': typeof SwapRoute
   '/upload': typeof UploadRoute
   '/assets/$assetId': typeof AssetsAssetIdRoute
 }
@@ -60,19 +68,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/marketplace': typeof MarketplaceRoute
   '/profile': typeof ProfileRoute
+  '/swap': typeof SwapRoute
   '/upload': typeof UploadRoute
   '/assets/$assetId': typeof AssetsAssetIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/marketplace' | '/profile' | '/upload' | '/assets/$assetId'
+  fullPaths:
+    | '/'
+    | '/marketplace'
+    | '/profile'
+    | '/swap'
+    | '/upload'
+    | '/assets/$assetId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/marketplace' | '/profile' | '/upload' | '/assets/$assetId'
+  to:
+    | '/'
+    | '/marketplace'
+    | '/profile'
+    | '/swap'
+    | '/upload'
+    | '/assets/$assetId'
   id:
     | '__root__'
     | '/'
     | '/marketplace'
     | '/profile'
+    | '/swap'
     | '/upload'
     | '/assets/$assetId'
   fileRoutesById: FileRoutesById
@@ -81,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MarketplaceRoute: typeof MarketplaceRoute
   ProfileRoute: typeof ProfileRoute
+  SwapRoute: typeof SwapRoute
   UploadRoute: typeof UploadRoute
   AssetsAssetIdRoute: typeof AssetsAssetIdRoute
 }
@@ -92,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/upload'
       fullPath: '/upload'
       preLoaderRoute: typeof UploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/swap': {
+      id: '/swap'
+      path: '/swap'
+      fullPath: '/swap'
+      preLoaderRoute: typeof SwapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -129,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MarketplaceRoute: MarketplaceRoute,
   ProfileRoute: ProfileRoute,
+  SwapRoute: SwapRoute,
   UploadRoute: UploadRoute,
   AssetsAssetIdRoute: AssetsAssetIdRoute,
 }
