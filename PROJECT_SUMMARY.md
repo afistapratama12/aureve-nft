@@ -8,11 +8,13 @@
 - ✅ **ERC-2981** automatic royalty enforcement  
 - ✅ **Lazy minting** with signed vouchers (no upfront gas)
 - ✅ **Multi-chain support**: Arbitrum Sepolia (default), Ethereum Sepolia, Monad Testnet
+- ✅ **Cross-chain swap** via LayerZero (34+ networks supported)
 - ✅ **IPFS/Pinata** decentralized storage
 - ✅ **Supabase** PostgreSQL database
 - ✅ **Auto-processing**: Images, videos, audio, documents with preview generation
 - ✅ **1% platform fee**, rest to creator + royalties
 - ✅ **Wallet-only authentication** (fully decentralized)
+- ✅ **Zero swap fees** (only network gas costs)
 
 ---
 
@@ -69,13 +71,20 @@
 - `nft.ts` - Lazy mint voucher creation, ownership verification, access control
 - `upload.ts` - Asset processing and IPFS upload
 
+### **Pages** (`/src/routes`)
+- `index.tsx` - Homepage with hero section and NFT carousel
+- `marketplace.tsx` - Browse, search, filter NFTs
+- `swap.tsx` - Cross-chain asset bridging interface
+- `upload.tsx` - Asset upload and NFT creation
+- `profile.tsx` - User profile and owned NFTs
+- `assets.$assetId.tsx` - Individual asset detail page
+
 ### **Components** (`/src/components`)
 - `WalletConnect.tsx` - Wallet connection button
 - `NetworkSwitcher.tsx` - Multi-chain network selector
 - `AssetCard.tsx` - Asset display card for marketplace
-
-### **Pages** (`/src/routes`)
-- `marketplace.tsx` - Browse, search, filter NFTs
+- `Header.tsx` - Navigation header with wallet integration
+- `Footer.tsx` - Site footer with newsletter and social links
 
 ### **Database** (`/supabase/migrations`)
 - `001_initial_schema.sql` - Complete database schema with RLS policies
@@ -86,6 +95,11 @@
 - `package.json` - Updated with deployment scripts
 
 ### **Documentation**
+- `SETUP.md` - Comprehensive setup and deployment guide
+- `SWAP_GUIDE.md` - Complete guide for cross-chain swap feature
+- `LAYERZERO_NETWORKS.md` - All LayerZero supported networks
+- `PINATA_SETUP.md` - Pinata IPFS setup guide
+- `supabase/README.md` - Database setup instructions
 - `SETUP.md` - Comprehensive setup and deployment guide
 - `supabase/README.md` - Database setup instructions
 
@@ -145,9 +159,21 @@ bun run dev
 
 ### ✅ **Multi-Chain Support**
 - Arbitrum Sepolia (default, cheaper gas)
+### ✅ **Multi-Chain Support**
+- Arbitrum Sepolia (default, cheaper gas)
 - Ethereum Sepolia
 - Monad Testnet
 - Easy network switching
+
+### ✅ **Cross-Chain Swap**
+- Bridge assets between 34+ blockchain networks
+- Powered by LayerZero V2 omnichain infrastructure
+- Zero platform fees (only network gas costs)
+- Fast bridging (5-10 minutes average)
+- Secure, decentralized transfers
+- Support for:
+  - **Testnets**: Ethereum Sepolia, Arbitrum Sepolia, Monad Testnet (active)
+  - **Mainnets**: Ethereum, Arbitrum, Base, Optimism, Polygon, and 16+ more (coming soon)
 
 ### ✅ **Marketplace**
 - Browse all assets

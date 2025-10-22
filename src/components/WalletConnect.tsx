@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { useWallet } from "@/hooks/useWallet";
 import { Button } from "@/components/ui/button";
 
@@ -23,12 +24,15 @@ export function WalletConnect() {
       openModal();
     } catch (error) {
       console.error("Failed to connect:", error);
-      alert("Failed to connect wallet. Please make sure you have a Web3 wallet installed.");
+      toast.error("Failed to connect wallet", {
+        description: "Please make sure you have a Web3 wallet installed.",
+      });
     }
   };
 
   const handleDisconnect = () => {
     disconnect();
+    toast.success("Wallet disconnected");
   };
 
   if (isConnected && address) {

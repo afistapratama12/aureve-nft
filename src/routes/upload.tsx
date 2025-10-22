@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useCallback } from "react";
+import { toast } from "sonner";
 import { Upload, Image as ImageIcon, Video, Music, FileText, X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -120,16 +121,17 @@ function UploadPage() {
     e.preventDefault();
     
     if (!formData.file || !formData.title) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
 
     if (!address || !chainId) {
-      alert("Wallet not properly connected");
+      toast.error("Wallet not properly connected");
       return;
     }
 
     setIsUploading(true);
+    const loadingToast = toast.loading("Uploading to IPFS and creating NFT...");
     
     try {
       // Create NFT with full implementation
@@ -150,13 +152,22 @@ function UploadPage() {
       const result = await createNFT(mintData, address, chainId);
       
       console.log("NFT created successfully:", result);
-      alert(`Asset uploaded successfully! Token ID: ${result.tokenId}`);
+      
+      toast.dismiss(loadingToast);
+      toast.success("Asset uploaded successfully!", {
+        description: `Token ID: ${result.tokenId}`,
+        duration: 5000,
+      });
       
       // Navigate to marketplace
       navigate({ to: "/marketplace" });
     } catch (error) {
       console.error("Upload error:", error);
-      alert(error instanceof Error ? error.message : "Upload failed. Please try again.");
+      toast.dismiss(loadingToast);
+      toast.error("Upload failed", {
+        description: error instanceof Error ? error.message : "Please try again",
+        duration: 5000,
+      });
     } finally {
       setIsUploading(false);
     }

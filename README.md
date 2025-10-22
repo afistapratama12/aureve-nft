@@ -1,53 +1,385 @@
-Welcome to your new TanStack app! 
+# 🎨 Aureve - Decentralized NFT Marketplace
 
-# Getting Started
+<div align="center">
 
-To run this application:
+![Aureve Logo](https://via.placeholder.com/150?text=Aureve)
+
+**Create, Trade & Own Digital Assets Across Multiple Blockchains**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.28-orange.svg)](https://soliditylang.org/)
+[![LayerZero](https://img.shields.io/badge/LayerZero-V2-purple.svg)](https://layerzero.network/)
+
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Roadmap](#-roadmap)
+
+</div>
+
+---
+
+## 🌟 Overview
+
+Aureve is a **next-generation NFT marketplace** that enables creators to tokenize and trade digital assets (images, videos, audio, documents) with true ownership and cross-chain capabilities.
+
+### Why Aureve?
+
+- 🔓 **Zero Upfront Costs**: Lazy minting - only pay gas when NFT is purchased
+- 🌐 **Cross-Chain Swaps**: Bridge assets across 34+ networks via LayerZero
+- 💰 **Creator-First**: 1% platform fee, rest goes to creator + royalties
+- 🔒 **Fully Decentralized**: Wallet-only auth, IPFS storage, on-chain ownership
+- ⚡ **Multi-Chain**: Ethereum, Arbitrum, Monad (more coming soon)
+- 🎁 **Unlimited Editions**: ERC-1155 for affordable, accessible NFTs
+
+---
+
+## ✨ Features
+
+### 🎨 NFT Marketplace
+- **Browse & Discover**: Explore curated collections of digital assets
+- **Search & Filter**: Find exactly what you're looking for
+- **Creator Profiles**: Follow your favorite artists
+- **Gated Content**: Full-resolution access only for NFT owners
+
+### 🚀 Upload & Mint
+- **Drag & Drop Upload**: Simple, intuitive interface
+- **Auto-Processing**: Automatic preview generation for all media types
+- **IPFS Storage**: Decentralized, permanent storage via Pinata
+- **Lazy Minting**: Create NFTs without upfront gas costs
+- **Royalty Settings**: Set custom royalty percentages (ERC-2981)
+
+### 🔄 Cross-Chain Swap
+- **34+ Networks Supported**: Powered by LayerZero V2
+- **Zero Platform Fees**: Only pay network gas costs
+- **Fast Bridging**: Average 5-10 minute completion
+- **Secure**: Decentralized, non-custodial transfers
+- **Active Networks**: Ethereum Sepolia, Arbitrum Sepolia, Monad Testnet
+- **Coming Soon**: Ethereum, Arbitrum, Base, Optimism, Polygon, and more
+
+### 💎 Smart Contracts
+- **ERC-1155**: Efficient unlimited edition NFTs
+- **ERC-2981**: Automatic royalty enforcement
+- **Audited Code**: Professional security standards
+- **Multi-Chain**: Deploy to any EVM-compatible chain
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js**: v20.19+ or v22.12+
+- **Bun**: Latest version ([install](https://bun.sh))
+- **MetaMask**: Browser wallet extension
+- **Supabase Account**: For database
+- **Pinata Account**: For IPFS storage
+
+### Installation
 
 ```bash
-npm install
-npm run start
+# Clone the repository
+git clone https://github.com/afistapratama12/aureve-nft.git
+cd aureve-nft
+
+# Install dependencies
+bun install
+
+# Setup environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
 ```
 
-# Building For Production
+# Setup database (run SQL in Supabase dashboard)
+# See: supabase/migrations/001_initial_schema.sql
 
-To build this application for production:
+# Deploy smart contract
+cd contract
+bun install
+bun run deploy:arbitrum  # Or deploy:ethereum, deploy:monad
+cd ..
+
+# Start development server
+bun dev
+```
+
+Visit `http://localhost:3000` 🎉
+
+---
+
+## 📁 Project Structure
+
+```
+aureve/
+├── contract/                 # Smart contracts
+│   ├── contracts/
+│   │   └── DigitalAssetNFT.sol
+│   ├── scripts/
+│   │   └── deploy.js
+│   └── test/
+│       └── DigitalAssetNFT.test.js
+├── src/
+│   ├── components/          # React components
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── WalletConnect.tsx
+│   │   └── NetworkSwitcher.tsx
+│   ├── routes/              # Pages
+│   │   ├── index.tsx        # Homepage
+│   │   ├── marketplace.tsx  # Browse NFTs
+│   │   ├── swap.tsx         # Cross-chain swap
+│   │   ├── upload.tsx       # Create NFT
+│   │   └── profile.tsx      # User profile
+│   ├── services/
+│   │   ├── api/             # Server functions
+│   │   ├── blockchain/      # Web3 integration
+│   │   ├── storage/         # IPFS/Pinata
+│   │   └── assetProcessing/ # Media processing
+│   ├── hooks/               # React hooks
+│   └── stores/              # State management
+├── supabase/
+│   └── migrations/          # Database schema
+├── LAYERZERO_NETWORKS.md    # All supported networks
+├── SWAP_GUIDE.md            # Swap feature guide
+└── SETUP.md                 # Detailed setup guide
+```
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
 
 ```bash
-npm run build
+# Blockchain
+VITE_WALLET_CONNECT_PROJECT_ID=your_project_id
+VITE_CONTRACT_ADDRESS_ARBITRUM=0x...
+VITE_CONTRACT_ADDRESS_ETHEREUM=0x...
+VITE_CONTRACT_ADDRESS_MONAD=0x...
+
+# Storage
+VITE_PINATA_API_KEY=your_pinata_jwt
+VITE_PINATA_GATEWAY_DOMAIN=your_gateway.mypinata.cloud
+
+# Database
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key
+
+# Server (for EIP-712 signing)
+SERVER_PRIVATE_KEY=0x...
 ```
 
-## Testing
+See [`.env.example`](./.env.example) for complete list.
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: [TanStack Start](https://tanstack.com/start) (React + TypeScript)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- **State**: [Zustand](https://zustand-demo.pmnd.rs/)
+- **Data Fetching**: [TanStack Query](https://tanstack.com/query)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+
+### Web3
+- **Wallet**: [wagmi](https://wagmi.sh/) + [Web3Modal](https://web3modal.com/)
+- **Library**: [ethers.js v6](https://docs.ethers.org/v6/) + [viem](https://viem.sh/)
+- **Cross-Chain**: [LayerZero V2](https://docs.layerzero.network/)
+
+### Backend
+- **API**: TanStack Start server functions
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **Storage**: [Pinata](https://pinata.cloud/) (IPFS)
+- **Processing**: [Sharp](https://sharp.pixelplumbing.com/) (images), FFmpeg (video/audio)
+
+### Blockchain
+- **Development**: [Hardhat](https://hardhat.org/)
+- **Language**: [Solidity 0.8.28](https://soliditylang.org/)
+- **Standards**: ERC-1155, ERC-2981
+- **Networks**: Ethereum Sepolia, Arbitrum Sepolia, Monad Testnet
+
+---
+
+## 📚 Documentation
+
+- **[Setup Guide](./SETUP.md)**: Complete setup and deployment instructions
+- **[Swap Guide](./SWAP_GUIDE.md)**: How to use cross-chain swap feature
+- **[LayerZero Networks](./LAYERZERO_NETWORKS.md)**: All 34+ supported networks
+- **[Project Summary](./PROJECT_SUMMARY.md)**: Technical overview
+- **[Pinata Setup](./PINATA_SETUP.md)**: IPFS storage configuration
+- **[Contract Deployment](./contract/DEPLOYMENT.md)**: Smart contract deployment guide
+
+---
+
+## 🧪 Testing
+
+### Smart Contracts
 
 ```bash
-npm run test
+cd contract
+
+# Compile contracts
+bun run compile
+
+# Run tests
+bun run test
+
+# Test coverage
+bun run coverage
+
+# Local deployment (for testing)
+bun run deploy:local
 ```
 
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-
-
-## Setting up Clerk
-
-- Set the `VITE_CLERK_PUBLISHABLE_KEY` in your `.env.local`.
-
-
-## Shadcn
-
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
+### Frontend
 
 ```bash
-pnpx shadcn@latest add button
+# Run all tests
+bun test
+
+# Run with UI
+bun test --ui
+
+# Watch mode
+bun test --watch
 ```
 
+---
 
+## 🚀 Deployment
 
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
+### Smart Contracts
+
+```bash
+cd contract
+
+# Deploy to Arbitrum Sepolia (testnet)
+bun run deploy:arbitrum
+
+# Deploy to Ethereum Sepolia (testnet)
+bun run deploy:ethereum
+
+# Deploy to Monad Testnet
+bun run deploy:monad
+
+# Verify contract on Etherscan
+bun run verify:arbitrum
+```
+
+### Frontend
+
+```bash
+# Build for production
+bun run build
+
+# Deploy to Vercel
+vercel --prod
+
+# Or deploy to Netlify
+netlify deploy --prod
+```
+
+---
+
+## 🗺️ Roadmap
+
+### ✅ Phase 1: MVP (Completed)
+- ✅ Core NFT marketplace
+- ✅ Lazy minting with ERC-1155
+- ✅ IPFS storage via Pinata
+- ✅ Multi-chain support (3 testnets)
+- ✅ Swap UI with 34 networks
+- ✅ Homepage with NFT carousel
+- ✅ User profiles
+
+### 🔄 Phase 2: LayerZero Integration (Q1 2026)
+- ⏳ LayerZero V2 SDK integration
+- ⏳ Cross-chain swap contracts
+- ⏳ Real-time fee estimation
+- ⏳ Transaction tracking
+- ⏳ Mainnet deployment (5 chains)
+
+### 📅 Phase 3: Feature Expansion (Q2 2026)
+- 📅 NFT bridging across chains
+- 📅 Advanced marketplace filters
+- 📅 Auction functionality
+- 📅 Bulk upload
+- 📅 Creator analytics
+- 📅 20+ mainnet networks
+
+### 📅 Phase 4: Enterprise (Q3 2026)
+- 📅 API for developers
+- 📅 White-label solution
+- 📅 Advanced royalty splits
+- 📅 Institutional features
+- 📅 Mobile apps (iOS/Android)
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+### Development Workflow
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Code Standards
+
+- **TypeScript**: Strict mode enabled
+- **Linting**: ESLint + Prettier
+- **Testing**: Minimum 80% coverage
+- **Commits**: Conventional commits format
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **[LayerZero](https://layerzero.network/)**: Omnichain infrastructure
+- **[OpenZeppelin](https://openzeppelin.com/)**: Secure smart contract libraries
+- **[shadcn/ui](https://ui.shadcn.com/)**: Beautiful UI components
+- **[TanStack](https://tanstack.com/)**: Powerful React tools
+- **[Pinata](https://pinata.cloud/)**: IPFS storage
+- **[Supabase](https://supabase.com/)**: Backend infrastructure
+
+---
+
+## 📞 Support
+
+- **Documentation**: [See docs folder](./docs)
+- **Discord**: [Join our community](#)
+- **Twitter**: [@AureveNFT](#)
+- **Email**: support@aureve.io
+
+---
+
+## 🔗 Links
+
+- **Website**: [aureve.io](#)
+- **GitHub**: [github.com/afistapratama12/aureve-nft](https://github.com/afistapratama12/aureve-nft)
+- **Demo**: [demo.aureve.io](#)
+- **Docs**: [docs.aureve.io](#)
+
+---
+
+<div align="center">
+
+**Built with ❤️ by the Aureve Team**
+
+⭐ Star us on GitHub — it helps!
+
+[Report Bug](https://github.com/afistapratama12/aureve-nft/issues) • [Request Feature](https://github.com/afistapratama12/aureve-nft/issues)
+
+</div>
 
 ### Adding A Route
 

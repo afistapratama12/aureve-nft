@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { toast } from "sonner";
 import { ArrowLeft, Download, ExternalLink, User, Calendar, Hash, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,11 +51,13 @@ function AssetDetailPage() {
 
   const handlePurchase = async () => {
     if (!isConnected) {
-      alert("Please connect your wallet first");
+      toast.error("Please connect your wallet first");
       return;
     }
 
     setIsPurchasing(true);
+    const loadingToast = toast.loading("Processing purchase...");
+    
     try {
       // TODO: Implement actual purchase logic
       // 1. Call redeemVoucher or purchaseToken
@@ -64,11 +67,18 @@ function AssetDetailPage() {
       
       await new Promise((resolve) => setTimeout(resolve, 2000));
       
-      alert("Purchase successful! NFT minted to your wallet.");
+      toast.dismiss(loadingToast);
+      toast.success("Purchase successful!", {
+        description: "NFT minted to your wallet",
+        duration: 5000,
+      });
       // Refresh asset data
     } catch (error) {
       console.error("Purchase error:", error);
-      alert("Purchase failed. Please try again.");
+      toast.dismiss(loadingToast);
+      toast.error("Purchase failed", {
+        description: "Please try again",
+      });
     } finally {
       setIsPurchasing(false);
     }
@@ -76,7 +86,7 @@ function AssetDetailPage() {
 
   const handleDownload = async () => {
     if (!fullAssetUrl) {
-      alert("Full asset not available");
+      toast.error("Full asset not available");
       return;
     }
 
@@ -84,9 +94,12 @@ function AssetDetailPage() {
     try {
       // Open in new tab for download
       window.open(fullAssetUrl, "_blank");
+      toast.success("Opening download in new tab");
     } catch (error) {
       console.error("Download error:", error);
-      alert("Download failed. Please try again.");
+      toast.error("Download failed", {
+        description: "Please try again",
+      });
     } finally {
       setIsDownloading(false);
     }
