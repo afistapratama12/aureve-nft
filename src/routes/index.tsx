@@ -158,7 +158,7 @@ function HomePage() {
             >
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
                 <span className="block text-white">Create, Trade &</span>
-                <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent py-2">
                   Own Digital Assets
                 </span>
               </h1>

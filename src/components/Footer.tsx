@@ -82,9 +82,9 @@ export default function Footer() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_120%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-6 md:px-8 py-16">
 
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-12 md:gap-8">
+        <div className="flex flex-col md:flex-row md:justify-between gap-12 md:gap-8">
 
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
@@ -144,7 +144,7 @@ export default function Footer() {
               })}
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12 lg:gap-8">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-12 lg:gap-8">
             {/* Brand Section */}
             
 
