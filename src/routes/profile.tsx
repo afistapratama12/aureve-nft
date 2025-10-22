@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useWallet } from '@/hooks/useWallet'
+import { useExternalNFTs } from '@/hooks/useExternalNFTs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { NFTCard } from '@/components/ui/nft-card'
-import { Copy, ExternalLink, Wallet as WalletIcon, TrendingUp, Image, Award } from 'lucide-react'
+import { Copy, ExternalLink, Wallet as WalletIcon, Image, Award, Package, LogOut } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
@@ -11,39 +12,12 @@ export const Route = createFileRoute('/profile')({
   component: ProfilePage,
 })
 
-// Mock data for owned NFTs - replace with actual blockchain data
-const ownedNFTs = [
-  {
-    id: '1',
-    title: 'Digital Sunset #42',
-    description: 'Beautiful sunset captured in 8K resolution',
-    imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-    price: '0.5 ETH',
-    creator: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-    owned: true,
-  },
-  {
-    id: '2',
-    title: 'Abstract Motion',
-    description: '3D animated loop - 60fps',
-    imageUrl: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=800',
-    price: '1.2 ETH',
-    creator: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-    owned: true,
-  },
-  {
-    id: '3',
-    title: 'Neon City',
-    description: 'Cyberpunk cityscape photograph',
-    imageUrl: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800',
-    price: '0.8 ETH',
-    creator: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-    owned: true,
-  },
-]
-
 function ProfilePage() {
-  const { address, isConnected, balance, chainName, openModal } = useWallet()
+  const { address, isConnected, balance, chainName, openModal, disconnect } = useWallet()
+  const { data: externalNFTs, isLoading: isLoadingExternal } = useExternalNFTs()
+
+  // TODO: Fetch Aureve NFTs dari contract
+  const aureveNFTs: any[] = []
 
   const copyAddress = () => {
     if (address) {
@@ -84,7 +58,7 @@ function ProfilePage() {
               <WalletIcon className="w-8 h-8 text-white" />
             </div>
             <CardTitle className="text-2xl text-white">Connect Your Wallet</CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-gray-300">
               Please connect your wallet to view your profile and NFT collection
             </CardDescription>
           </CardHeader>
@@ -104,20 +78,20 @@ function ProfilePage() {
 
   const stats = [
     {
-      label: 'NFTs Owned',
-      value: ownedNFTs.length,
+      label: 'Aureve NFTs',
+      value: aureveNFTs.length,
       icon: Image,
       color: 'from-purple-500 to-pink-500',
     },
     {
-      label: 'Total Value',
-      value: '2.5 ETH',
-      icon: TrendingUp,
+      label: 'Other NFTs',
+      value: externalNFTs?.length || 0,
+      icon: Package,
       color: 'from-blue-500 to-cyan-500',
     },
     {
-      label: 'Collections',
-      value: '3',
+      label: 'Total NFTs',
+      value: aureveNFTs.length + (externalNFTs?.length || 0),
       icon: Award,
       color: 'from-orange-500 to-red-500',
     },
@@ -152,34 +126,49 @@ function ProfilePage() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">My Profile</h1>
-                <div className="flex items-center gap-2">
-                  <code className="text-sm text-gray-400 bg-white/5 px-3 py-1 rounded-lg">
-                    {address && shortenAddress(address)}
-                  </code>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-gray-400 hover:text-white"
-                    onClick={copyAddress}
-                  >
-                    <Copy className="w-4 h-4" />
-                  </Button>
-                  <a
-                    href={address ? getEtherscanUrl(address) : '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
+                <div className='flex gap-4'>
+                    <div className="flex items-center gap-2">
+                      <code className="text-sm text-gray-400 bg-white/5 px-3 py-1 rounded-lg">
+                        {address && shortenAddress(address)}
+                      </code>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-gray-400"
+                        onClick={copyAddress}
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                      <a
+                        href={address ? getEtherscanUrl(address) : '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-400 hover:text-white transition-colors"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                    <div className="flex items-end">
+                    <Button
+                      onClick={() => disconnect()}
+                      variant="outline"
+                      className="h-9 px-4 text-sm border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/30 transition-all"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Disconnect
+                    </Button>
+                  </div>
                 </div>
+                
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <div className="text-sm text-gray-400">Balance</div>
-              <div className="text-2xl font-bold text-white">{balance}</div>
-              <div className="text-xs text-gray-500">{chainName}</div>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex flex-col gap-2">
+                <div className="text-sm text-gray-400">Balance</div>
+                <div className="text-2xl font-bold text-white">{balance}</div>
+                <div className="text-xs text-gray-500">{chainName}</div>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -228,12 +217,12 @@ function ProfilePage() {
             </Link>
           </div>
 
-          {ownedNFTs.length === 0 ? (
+          {aureveNFTs.length === 0 ? (
             <Card className="bg-white/[0.03] border-white/[0.08]">
               <CardContent className="py-12 text-center">
                 <Image className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                <h3 className="text-xl font-semibold text-white mb-2">No NFTs Yet</h3>
-                <p className="text-gray-400 mb-6">
+                <h3 className="text-xl font-semibold text-white mb-2">No Aureve NFTs Yet</h3>
+                <p className="text-gray-300 mb-6">
                   Start building your collection by purchasing NFTs from the marketplace
                 </p>
                 <Link to="/marketplace">
@@ -245,7 +234,7 @@ function ProfilePage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {ownedNFTs.map((nft, index) => (
+              {aureveNFTs.map((nft, index) => (
                 <motion.div
                   key={nft.id}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -267,6 +256,105 @@ function ProfilePage() {
                 </motion.div>
               ))}
             </div>
+          )}
+        </motion.div>
+
+        {/* External NFTs Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mt-12"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Other NFTs</h2>
+              <p className="text-sm text-gray-400 mt-1">
+                NFTs from other collections in your wallet (view only)
+              </p>
+            </div>
+            {externalNFTs && externalNFTs.length > 0 && (
+              <div className="text-sm text-gray-500">
+                {externalNFTs.length} {externalNFTs.length === 1 ? 'NFT' : 'NFTs'}
+              </div>
+            )}
+          </div>
+
+          {isLoadingExternal ? (
+            <Card className="bg-white/[0.03] border-white/[0.08]">
+              <CardContent className="py-12 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-500 border-t-transparent mx-auto mb-4" />
+                <p className="text-gray-400">Loading your NFTs from blockchain...</p>
+              </CardContent>
+            </Card>
+          ) : externalNFTs && externalNFTs.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {externalNFTs.map((nft, index) => (
+                <motion.div
+                  key={nft.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <Card className="bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] transition-colors overflow-hidden group">
+                    <CardContent className="p-0">
+                      {/* NFT Image */}
+                      <div className="relative aspect-square bg-white/[0.02]">
+                        <img
+                          src={nft.image}
+                          alt={nft.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.png'
+                          }}
+                        />
+                        {/* Collection Badge */}
+                        <div className="absolute top-2 right-2">
+                          <div className="px-2 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-white/10">
+                            <Package className="w-3 h-3 text-gray-400 inline mr-1" />
+                            <span className="text-xs text-gray-300">External</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* NFT Info */}
+                      <div className="p-4">
+                        <h3 className="text-white font-medium mb-1 truncate">
+                          {nft.title}
+                        </h3>
+                        <p className="text-xs text-gray-400 truncate mb-3">
+                          {nft.collection}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-gray-500">
+                            Token #{nft.tokenId.length > 6 ? `${nft.tokenId.slice(0, 6)}...` : nft.tokenId}
+                          </span>
+                          <a
+                            href={`https://opensea.io/assets/${nft.network}/${nft.contractAddress}/${nft.tokenId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                          >
+                            View
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <Card className="bg-white/[0.03] border-white/[0.08]">
+              <CardContent className="py-12 text-center">
+                <Package className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                <h3 className="text-xl font-semibold text-white mb-2">No Other NFTs Found</h3>
+                <p className="text-gray-300">
+                  You don't have any NFTs from other collections on this network
+                </p>
+              </CardContent>
+            </Card>
           )}
         </motion.div>
       </div>

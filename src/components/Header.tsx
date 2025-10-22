@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useWallet } from "@/hooks/useWallet";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { NetworkSwitcher } from "@/components/NetworkSwitcher";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,9 +36,10 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#09090b]/100 backdrop-blur-xl">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex h-16 items-center justify-between">
+          {/* Logo - Left Side */}
           <Link
             to="/"
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-3 group flex-shrink-0"
           >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition"></div>
@@ -50,7 +52,8 @@ export default function Header() {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Nav Links - Center (Absolute Positioning) */}
+          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -69,7 +72,10 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          {/* Wallet & Network Switcher - Right Side */}
+          <div className="hidden md:flex items-center gap-4 flex-shrink-0">
+            {isConnected && <NetworkSwitcher />}
+            
             <Button
               onClick={handleWalletClick}
               className={cn(

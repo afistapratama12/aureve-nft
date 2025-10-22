@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
-import { useWalletStore } from "@/stores/walletStore";
-import { useConnectWallet, useDisconnectWallet } from "@/hooks/useWallet";
+import { useWallet } from "@/hooks/useWallet";
 import { Button } from "@/components/ui/button";
-import { formatAddress } from "@/lib/utils";
 
 /**
  * WalletConnect component
  * Handles wallet connection and displays address/balance
  */
 export function WalletConnect() {
-  const { address, balance, isConnected, chainId } = useWalletStore();
-  const connectMutation = useConnectWallet();
-  const disconnectMutation = useDisconnectWallet();
+  const { address, balance, isConnected, openModal, disconnect } = useWallet();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -24,15 +20,15 @@ export function WalletConnect() {
 
   const handleConnect = async () => {
     try {
-      await connectMutation.mutateAsync();
+      openModal();
     } catch (error) {
       console.error("Failed to connect:", error);
-      alert("Failed to connect wallet. Please make sure MetaMask is installed.");
+      alert("Failed to connect wallet. Please make sure you have a Web3 wallet installed.");
     }
   };
 
   const handleDisconnect = () => {
-    disconnectMutation.mutate();
+    disconnect();
   };
 
   if (isConnected && address) {
@@ -56,10 +52,9 @@ export function WalletConnect() {
   return (
     <Button
       onClick={handleConnect}
-      disabled={connectMutation.isPending}
       className="bg-blue-600 hover:bg-blue-700"
     >
-      {connectMutation.isPending ? "Connecting..." : "Connect Wallet"}
+      Connect Wallet
     </Button>
   );
 }

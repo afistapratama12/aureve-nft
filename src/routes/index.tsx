@@ -111,7 +111,7 @@ function HomePage() {
             </p>
 
             {/* Description */}
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
               The next-generation NFT marketplace powered by lazy minting
               technology. Zero upfront costs, maximum creativity.
             </p>
@@ -189,7 +189,7 @@ function HomePage() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Why Choose Aureve?
             </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
               Built for creators, collectors, and innovators. Experience the
               future of digital ownership.
             </p>

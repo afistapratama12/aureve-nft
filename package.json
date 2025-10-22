@@ -25,6 +25,7 @@
     "@tanstack/react-start": "^1.132.0",
     "@tanstack/router-plugin": "^1.132.0",
     "@web3modal/wagmi": "^5.1.11",
+    "alchemy-sdk": "^3.6.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",

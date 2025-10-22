@@ -59,7 +59,7 @@ function UploadPage() {
         <Card className="max-w-md bg-white/[0.03] border-white/[0.08]">
           <CardHeader>
             <CardTitle className="text-white">Wallet Not Connected</CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-gray-300">
               Please connect your wallet to upload and mint NFTs
             </CardDescription>
           </CardHeader>
@@ -179,7 +179,7 @@ function UploadPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 text-white">Create New NFT</h1>
-          <p className="text-gray-400">
+          <p className="text-gray-300">
             Upload your digital asset and set pricing to mint as NFT
           </p>
         </div>
@@ -190,7 +190,7 @@ function UploadPage() {
             <div className="space-y-6">
               <Card className="bg-white/[0.03] border-white/[0.08]">`
                 <CardHeader>
-                  <CardTitle>Upload Asset</CardTitle>
+                  <CardTitle className="text-gray-200">Upload Asset</CardTitle>
                   <CardDescription>
                     Supported: Images, Videos, Audio, Documents
                   </CardDescription>
@@ -230,9 +230,9 @@ function UploadPage() {
                           <Upload className="w-8 h-8 text-muted-foreground" />
                         </div>
                         <div className="text-center">
-                          <p className="font-medium mb-1">
+                          <p className="font-medium mb-1 text-gray-300">
                             Drop your file here, or{" "}
-                            <span className="text-primary">browse</span>
+                            <span className="text-gray-100">browse</span>
                           </p>
                           <p className="text-sm text-muted-foreground">
                             Max file size: 100MB
@@ -307,7 +307,7 @@ function UploadPage() {
                 <CardContent className="space-y-4">
                   {/* Title */}
                   <div className="space-y-2">
-                    <Label htmlFor="title" className="text-gray-300">`
+                    <Label htmlFor="title" className="text-gray-300">
                       Title <span className="text-destructive">*</span>
                     </Label>
                     <Input
@@ -326,7 +326,7 @@ function UploadPage() {
 
                   {/* Description */}
                   <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
+                    <Label htmlFor="description" className="text-gray-300">Description</Label>
                     <Textarea
                       id="description"
                       placeholder="Tell us more about your asset..."
@@ -343,7 +343,7 @@ function UploadPage() {
 
                   {/* Price */}
                   <div className="space-y-2">
-                    <Label htmlFor="price">
+                    <Label htmlFor="price" className="text-gray-300">
                       Price (ETH) <span className="text-destructive">*</span>
                     </Label>
                     <Input
@@ -368,7 +368,7 @@ function UploadPage() {
 
                   {/* Royalty */}
                   <div className="space-y-2">
-                    <Label htmlFor="royalty">
+                    <Label htmlFor="royalty" className="text-gray-300">
                       Royalty (%) <span className="text-destructive">*</span>
                     </Label>
                     <Input
